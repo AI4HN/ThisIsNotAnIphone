@@ -1,1 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <script>
+    /*
+    ================================================================================
+      ACCUEIL VISITEURS
+    ================================================================================
+     
+    ================================================================================
+      AVERTISSEMENT - PROTOTYPE
+    ================================================================================
+      - Propriété : Ce code est un prototype et reste la propriété intellectuelle 
+        de Frédéric Jacquet / AI[4]HumanNexus (https://ai4humannexus.com/).
+      - Licence d'utilisation : Il est mis à la disposition exclusive de 
+        l'accueil "Vivienne" de VCA, à titre gracieux et uniquement pour des 
+        fins de test et d'évaluation.
+      - Non-distribution : Ce code ne doit en aucun cas être transmis, copié ou 
+        distribué sans l'autorisation écrite de son auteur.
+      - Absence de garantie : Ce prototype est fourni "en l'état" à des fins de 
+        démonstration et n'inclut aucune garantie de maintenance ou de support 
+        pour d'éventuelles évolutions.
+    ================================================================================
+    */
+    </script>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./IMG/F3-favicon.png" type="image/png">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enregistrement Visiteur</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef1f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-align: left;
+            margin-top: 25px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .form-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .input-group, .radio-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .input-group input[type="text"] {
+            flex-grow: 1;
+        }
+        input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 0; 
+            font-weight: normal;
+        }
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(100px, 1fr)); /* 3 colonnes flexibles, min 100px */
+            gap: 10px 5px; /* Espacement entre les lignes et colonnes */
+            align-items: start;
+            flex-wrap: wrap; 
+        }
+        .radio-group label {
+            margin-right: 0; /* Suppression de la marge droite */
+            display: flex; /* Utilisation de flexbox pour aligner input et texte */
+            align-items: center;
+            cursor: pointer;
+            line-height: 1.2;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+            flex-shrink: 0; /* Empêche l'input de rétrécir */
+        }
+        #motif-autre-container {
+            margin-top: 10px;
+        }
+        .teams-parser-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .motif-section {
+            background-color: #e7f5fe;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .parser-error-message {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output-section {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+        }
+        .output-section h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #444;
+        }
+        .output-text {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+        .copy-button {
+            background-color: #28a745;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        .copy-button:hover {
+            background-color: #218838;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 2em;
+            font-size: 0.85em;
+        }
+        .footer-link a {
+            color: #7f8c8d;
+            text-decoration: none;
+        }
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+        .menu-flottant {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: #ced4da;
+            color: #495057;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.2s ease-in-out;
+        }
+        .menu-flottant:hover {
+            transform: scale(1.1);
+        }
+        .clear-flottant {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: #f5c6cb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.2s ease-in-out;
+        }
+        .clear-flottant:hover {
+            transform: scale(1.1);
+        }
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s, bottom 0.4s;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: 50px;
+        }
+        /* Style pour l'emplacement de la ligne de statut (déplacée en bas) */
+        #list-status-area-bottom {
+            text-align: center; 
+            font-size: 0.8em; /* Réduction de la police */
+            color: #6c757d; 
+            margin-top: 15px; 
+            margin-bottom: 20px; 
+            font-style: italic;
+            line-height: 1.4;
+        }
+        /* Style pour les boutons de chargement (alignement et taille égale) */
+        .loader-buttons-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        .loader-buttons-container button {
+            width: 50%; /* 50% de la div pour être de largeur égale */
+            padding: 8px 10px; /* Réduction du padding pour réduire la hauteur */
+            font-size: 0.9em; /* Réduction de la police */
+            margin-top: 0;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enregistrement Visiteur</h1>
+        
+        <div id="list-status-area-top" style="display: none;"></div> 
+        
+        <form id="visiteur-form">
+            <h2 class="section-title">1. Contact VCA</h2>
+            <div class="teams-parser-section">
+                <label class="checkbox-label" for="teams-parser-toggle">
+                    <input type="checkbox" id="teams-parser-toggle"> 🔍 Saisie depuis Teams
+                </label>
+                <div id="teams-parser-container" class="hidden" style="margin-top: 10px;">
+                    <label for="teams-input">Coller le nom complet depuis Teams</label>
+                    <input type="text" id="teams-input" placeholder="Ex: NOM Prénom (XXX-YY)">
+                    <div id="parser-error-message" class="parser-error-message hidden">
+                        Format non reconnu. Veuillez saisir manuellement.
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <label for="nom-contact-vca">Nom Contact VCA</label>
+                <input type="text" id="nom-contact-vca" maxlength="20">
+            </div>
+            <div class="form-section">
+                <label for="prenom-contact-vca">Prénom Contact VCA</label>
+                <input type="text" id="prenom-contact-vca" maxlength="20">
+            </div>
+            
+            <div id="avertissement-pierres-container" class="hidden" style="margin-bottom: 20px;">
+                <div id="avertissement-pierres-message" style="background-color: #fff3cd; color: #cc9900; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 10px; border: 1px solid #cc9900;">
+                    </div>
+                <div style="padding-left: 5px;">
+                    <label class="checkbox-label" for="confirmation-avertissement" style="color: #cc9900; font-weight: bold; margin: 0;">
+                        <input type="checkbox" id="confirmation-avertissement" style="width: auto; margin-right: 5px;"> Bien compris
+                    </label>
+                </div>
+            </div>
+            <h2 class="section-title">2. Motif de la visite</h2>
+            <div class="form-section motif-section">
+                <div class="radio-group">
+                    <label><input type="radio" name="motif" value="RDV" required checked> RDV 🗓️</label>
+                    <!-- BOUTONS SUPPRIMÉS : Ces 7 motifs sont gérés par la tuile "App Express" -->
+                    <!-- <label><input type="radio" name="motif" value="Accueil Bouquet"> Accueil Bouquet 💐</label> -->
+                    <!-- <label><input type="radio" name="motif" value="Bagage Dépot - VCA"> Bagage Dépot - VCA 🧳</label> -->
+                    <label><input type="radio" name="motif" value="Evènement"> Evènement 🥳</label>
+                    <!-- <label><input type="radio" name="motif" value="Linge ACCUEIL"> Linge ACCUEIL 🧺</label> -->
+                    <!-- <label><input type="radio" name="motif" value="Linge FABLAB"> Linge FABLAB 👕</label> -->
+                    <!-- <label><input type="radio" name="motif" value="Machine à café"> Machine à café ☕</label> -->
+                    <!-- <label><input type="radio" name="motif" value="Machine Distributeurs"> Machine Distributeurs 🍬</label> -->
+                    <label><input type="radio" name="motif" value="Maintenance"> Maintenance 🛠️</label>
+                    <label><input type="radio" name="motif" value="PC Sécurité"> PC Sécurité 💻</label>
+                    <label><input type="radio" name="motif" value="Réunion"> Réunion 👥</label>
+                    <label><input type="radio" name="motif" value="Recyclage"> Recyclage ♻️</label>
+                    <!-- <label><input type="radio" name="motif" value="Traiteur"> Traiteur 🍽️</label> -->
+                    <label><input type="radio" name="motif" value="VCA - Formation"> VCA - Formation 🧠</label>
+                    <label><input type="radio" name="motif" value="VCA - Stage"> VCA - Stage 🎓</label>
+                    <label><input type="radio" name="motif" value="Autre"> Autre ❓</label>
+                </div>
+                <div id="maintenance-options-container" class="hidden" style="margin-top: 15px; padding-left: 20px; border-left: 3px solid #bde0fe;">
+                    <label style="font-weight: normal; margin-bottom: 10px;">Précisez le type de maintenance :</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="maintenance-type" value="Ascenseurs"> Ascenseurs</label>
+                        <label><input type="radio" name="maintenance-type" value="Chauffage"> Chauffage</label>
+                        <label><input type="radio" name="maintenance-type" value="Climatisation"> Climatisation</label>
+                        <label><input type="radio" name="maintenance-type" value="Copieurs"> Copieurs</label>
+                        <label><input type="radio" name="maintenance-type" value="Electricité"> Electricité</label>
+                        <label><input type="radio" name="maintenance-type" value="Imprimantes"> Imprimantes</label>
+                        <label><input type="radio" name="maintenance-type" value="Autre Maintenance" id="maintenance-autre-radio" checked> Autre</label>
+                    </div>
+                    <div id="maintenance-autre-container" style="margin-top: 10px;">
+                        <input type="text" id="maintenance-autre-text" placeholder="Précisez...">
+                    </div>
+                </div>
+                <div id="motif-autre-container" class="hidden" style="margin-top: 10px;">
+                    <label for="motif-autre-text">Précisez le motif*</label>
+                    <input type="text" id="motif-autre-text" maxlength="50">
+                </div>
+            </div>
+
+            <h2 class="section-title">3. Informations Visiteur</h2>
+            <div class="form-section">
+                <label>Intitulé</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="intitule" value="M." id="intitule-m" required checked> M.</label>
+                    <label><input type="radio" name="intitule" value="Mme" id="intitule-mme"> Mme</label>
+                </div>
+            </div>
+            <div class="form-section">
+                <label for="nom">Nom Visiteur*</label>
+                <input type="text" id="nom" maxlength="40" required>
+            </div>
+            <div class="form-section">
+                <label for="prenom">Prénom Visiteur</label>
+                <input type="text" id="prenom" maxlength="40">
+            </div>
+            
+            <div id="avertissement-badge-container" class="hidden" style="margin-bottom: 20px;">
+                <div id="avertissement-badge-message" style="background-color: #e3f2fd; color: #007bff; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 10px; border: 1px solid #007bff;">
+                    </div>
+                <div style="padding-left: 5px;">
+                    <label class="checkbox-label" for="confirmation-badge" style="color: #007bff; font-weight: bold; margin: 0;">
+                        <input type="checkbox" id="confirmation-badge" style="width: auto; margin-right: 5px;"> Badge remis
+                    </label>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="input-group">
+                    <label for="societe">Société</label>
+                </div>
+                <input type="text" id="societe" maxlength="40">
+            </div>
+            
+            <div class="form-section">
+                <label for="notes-supplementaires">Notes Supplémentaires</label>
+                <input type="text" id="notes-supplementaires" maxlength="100">
+            </div>
+
+            <button type="submit" id="valider-btn">Valider</button>
+        </form>
+
+        <div id="list-status-area-bottom"></div>
+        <div id="output-area" class="hidden">
+            <div class="output-section" id="notification-section">
+                <h3>Message de notification</h3>
+                <div class="output-text" id="notification-message"></div>
+                <button class="copy-button" onclick="copierMessage('notification-message')">Copier la phrase</button>
+            </div>
+            <div class="output-section">
+                <h3>Ligne de données Excel</h3>
+                <div class="output-text" id="excel-line"></div>
+                <button class="copy-button" onclick="copierMessage('excel-line')">Copier la ligne Excel</button>
+            </div>
+        </div>
+        
+        <div class="loader-buttons-container">
+            <button id="open-loader-badge-btn" style="background-color: #007bff; color: #fff;">
+                Charger Liste Badge (.xlsx, .csv)
+            </button>
+            <button id="open-loader-conf-btn" style="background-color: #6c757d; color: #fff;">
+                Charger Liste Confidentielle (.xlsx, .csv)
+            </button>
+        </div>
+        <div class="footer-link">
+            <a href="javascript:void(0);" onclick="afficherAvertissement()">Conditions d'utilisation</a>
+        </div>
+    </div>
+
+    <script src="./fonctions_communes.js"></script>
+    
+    <script>
+        // FONCTION : Met à jour l'affichage des statuts de la liste (Combiné)
+        function updateListStatusAccueil() {
+            const listStatusArea = document.getElementById('list-status-area-bottom');
+            
+            // Statut Liste Confidentielle (PIERRES)
+            const fileConf = localStorage.getItem('listeFileName');
+            const timeConf = localStorage.getItem('listeTimestamp');
+            
+            // Statut Liste Badge
+            const fileBadge = localStorage.getItem('listeBadgesFileName'); 
+            const timeBadge = localStorage.getItem('listeBadgesTimestamp'); 
+            
+            let statusHTML = "";
+            let isWarning = false;
+
+            // Statut Confidentielle
+            if (fileConf && timeConf) {
+                const dateConf = new Date(parseInt(timeConf, 10));
+                const dateStringConf = dateConf.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+                statusHTML += `Liste PIERRES active : '${fileConf}' (chargée le ${dateStringConf})`;
+            } else {
+                statusHTML += `ATTENTION : Aucune liste PIERRES n'est chargée.`;
+                isWarning = true;
+            }
+
+            // Séparateur
+            statusHTML += " | ";
+            
+            // Statut Badge
+            if (fileBadge && timeBadge) {
+                const dateBadge = new Date(parseInt(timeBadge, 10));
+                const dateStringBadge = dateBadge.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+                statusHTML += `Liste BADGE active : '${fileBadge}' (chargée le ${dateStringBadge})`;
+            } else {
+                statusHTML += `ATTENTION : Aucune liste BADGE n'est chargée.`;
+                isWarning = true;
+            }
+
+            listStatusArea.innerHTML = statusHTML;
+            // Affiche en rouge si au moins une liste manque
+            listStatusArea.style.color = isWarning ? '#dc3545' : '#28a745';
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            ajouterBoutonMenu();
+            
+            const clearButton = document.createElement('a');
+            clearButton.href = '#';
+            clearButton.className = 'clear-flottant';
+            clearButton.textContent = 'CLEAR';
+            clearButton.title = "Efface tous les champs";
+            clearButton.onclick = (e) => {
+                e.preventDefault();
+                location.reload();
+            };
+            document.body.appendChild(clearButton);
+
+            // Mise à jour du statut de la liste au démarrage
+            updateListStatusAccueil();
+
+            const form = document.getElementById('visiteur-form');
+            const intituleM = document.getElementById('intitule-m');
+            const nomInput = document.getElementById('nom');
+            const prenomInput = document.getElementById('prenom');
+            const societeInput = document.getElementById('societe');
+            const notesInput = document.getElementById('notes-supplementaires'); 
+            const motifRadios = document.querySelectorAll('input[name="motif"]');
+            const motifAutreContainer = document.getElementById('motif-autre-container');
+            const motifAutreInput = document.getElementById('motif-autre-text');
+            const maintenanceOptionsContainer = document.getElementById('maintenance-options-container');
+            const maintenanceTypeRadios = document.querySelectorAll('input[name="maintenance-type"]');
+            const maintenanceAutreContainer = document.getElementById('maintenance-autre-container');
+            const maintenanceAutreText = document.getElementById('maintenance-autre-text');
+            // Récupération des éléments Contact VCA
+            const nomContactVcaInput = document.getElementById('nom-contact-vca');
+            const prenomContactVcaInput = document.getElementById('prenom-contact-vca');
+            const teamsParserToggle = document.getElementById('teams-parser-toggle');
+            const teamsParserContainer = document.getElementById('teams-parser-container');
+            const teamsInput = document.getElementById('teams-input');
+            const parserErrorMessage = document.getElementById('parser-error-message');
+            const outputArea = document.getElementById('output-area');
+            const notificationSection = document.getElementById('notification-section');
+            const notificationMessage = document.getElementById('notification-message');
+            const excelLine = document.getElementById('excel-line');
+            
+            // ÉLÉMENTS DE VÉRIFICATION PIERRES
+            const avertissementPierresContainer = document.getElementById('avertissement-pierres-container');
+            const avertissementPierresMessage = document.getElementById('avertissement-pierres-message');
+            const confirmationAvertissementCheckbox = document.getElementById('confirmation-avertissement');
+            
+            // ÉLÉMENTS BADGE VISITEUR
+            const avertissementBadgeContainer = document.getElementById('avertissement-badge-container');
+            const avertissementBadgeMessage = document.getElementById('avertissement-badge-message');
+            const confirmationBadgeCheckbox = document.getElementById('confirmation-badge');
+            
+            // Références aux boutons de chargement
+            const openLoaderConfBtn = document.getElementById('open-loader-conf-btn'); 
+            const openLoaderBadgeBtn = document.getElementById('open-loader-badge-btn'); 
+
+            // LOGIQUE POUR LA LISTE CONFIDENTIELLE (PIERRES) - CORRECTION DE PORTÉE
+            function verifierContactVcaListeConfidentielle() {
+                const nomContact = nomContactVcaInput.value.trim();
+                const prenomContact = prenomContactVcaInput.value.trim();
+                
+                // Masquer le bloc par défaut et enlever l'obligation de cocher
+                avertissementPierresContainer.classList.add('hidden');
+                confirmationAvertissementCheckbox.required = false;
+                
+                // Si les champs sont vides, on ne fait rien
+                if (nomContact === '' && prenomContact === '') {
+                    return;
+                }
+
+                // verifierSiNomDansListe est disponible via fonctions_communes.js
+                if (verifierSiNomDansListe(nomContact, prenomContact)) {
+                    const nomVCA = nomContact.toUpperCase();
+                    const prenomVCA = prenomContact;
+                    
+                    // 1. Affichage du message d'alerte mis à jour
+                    avertissementPierresMessage.textContent = `⚠️ ${prenomVCA} ${nomVCA} fait partie de la "liste PIERRES" : A contacter par TELEPHONE ! ⚠️`;
+                    avertissementPierresContainer.classList.remove('hidden');
+                    
+                    // 2. Rendre la case à cocher obligatoire (bloquera la soumission si non cochée)
+                    confirmationAvertissementCheckbox.required = true;
+                }
+            }
+            
+            // LOGIQUE POUR LA LISTE BADGE (VISITEUR)
+            function verifierVisiteurListeBadge() {
+                const nom = nomInput.value.trim();
+                const prenom = prenomInput.value.trim();
+                
+                // Masquer le bloc par défaut et enlever l'obligation de cocher
+                avertissementBadgeContainer.classList.add('hidden');
+                confirmationBadgeCheckbox.required = false;
+
+                // On ne vérifie que si les champs Nom et Prénom sont remplis
+                if (nom === '' || prenom === '') {
+                    return;
+                }
+                
+                // rechercherBadge est disponible via fonctions_communes.js
+                const match = rechercherBadge(nom, prenom);
+
+                if (match) {
+                    const nomMatch = match.nom; 
+                    // Remettre la première lettre en majuscule pour l'affichage (si prénom n'est pas déjà en majuscule)
+                    const prenomMatch = match.prenom.length > 1 ? match.prenom.charAt(0) + match.prenom.slice(1).toLowerCase() : match.prenom; 
+                    
+                    // 1. Affichage du message d'alerte
+                    avertissementBadgeMessage.textContent = `✅ Badge trouvé pour ${prenomMatch} ${nomMatch} ! Veuillez lui remettre son badge.`;
+                    avertissementBadgeContainer.classList.remove('hidden');
+                    
+                    // 2. Rendre la case à cocher obligatoire
+                    confirmationBadgeCheckbox.required = true;
+                }
+            }
+            
+            // ÉVÉNEMENT : Ouvrir l'application de chargement Badge
+            openLoaderBadgeBtn.addEventListener('click', () => {
+                window.open('./CHARGEMENT_LISTE_BADGE.html', 'ChargementListeBadge', 'width=650,height=600,scrollbars=yes,resizable=yes');
+            });
+            
+            // ÉVÉNEMENT : Ouvrir l'application de chargement Confidentielle
+            openLoaderConfBtn.addEventListener('click', () => {
+                window.open('./CHARGEMENT_LISTE_CONFIDENTIELLE.html', 'ChargementListeConf', 'width=650,height=600,scrollbars=yes,resizable=yes');
+            });
+
+
+            teamsParserToggle.addEventListener('change', () => {
+                teamsParserContainer.classList.toggle('hidden', !teamsParserToggle.checked);
+            });
+
+            teamsInput.addEventListener('input', () => {
+                const parsedData = parseTeamsName(teamsInput.value);
+                if (parsedData) {
+                    nomContactVcaInput.value = parsedData.nom;
+                    prenomContactVcaInput.value = parsedData.prenom;
+                    parserErrorMessage.classList.add('hidden');
+                } else {
+                    parserErrorMessage.classList.remove('hidden');
+                }
+                // DÉCLENCHE LA VÉRIFICATION PIERRES APRÈS LA MISE À JOUR DES CHAMPS (Teams)
+                verifierContactVcaListeConfidentielle(); 
+            });
+            
+            // Attacher l'événement 'input' aux champs Contact VCA pour la vérification dynamique (Saisie manuelle)
+            nomContactVcaInput.addEventListener('input', verifierContactVcaListeConfidentielle);
+            prenomContactVcaInput.addEventListener('input', verifierContactVcaListeConfidentielle);
+            
+            // Attacher l'événement 'input' aux champs Visiteur pour la vérification Badge
+            nomInput.addEventListener('input', verifierVisiteurListeBadge);
+            prenomInput.addEventListener('input', verifierVisiteurListeBadge);
+
+            // Définition des motifs pour la logique
+            const motifsPcs = ['PC Sécurité', 'Recyclage'];
+            // suppression des motifs App Express
+            const motifsLingeAccueil = []; 
+            const motifsLingeFablab = [];
+            const motifsCafe = [];
+            const motifsDistributeurs = [];
+            const motifsBouquet = [];
+            const motifsTraiteur = []; 
+            const motifsDepotBagage = []; // CONSTANTE MISE À JOUR (sera testée plus bas)
+
+            function applyFormLogic() {
+                const selectedMotif = document.querySelector('input[name="motif"]:checked')?.value;
+                [nomInput, prenomInput, societeInput, nomContactVcaInput, prenomContactVcaInput].forEach(input => {
+                    input.disabled = false;
+                    input.style.backgroundColor = ''; 
+                });
+                
+                // Réinitialisation des champs forcés (pour le cas où l'utilisateur change de motif)
+                // Ces réinitialisations doivent inclure les VALEURS de l'App Express même si les boutons sont supprimés
+                if (nomInput.value === 'VCA' && societeInput.value === 'VCA') { nomInput.value = ''; societeInput.value = ''; }
+                if (nomInput.value === 'Agent' && societeInput.value === 'KALHYGE') { nomInput.value = ''; societeInput.value = ''; }
+                if (nomInput.value === 'Agent' && societeInput.value === 'LAUNDRYHEAP') { nomInput.value = ''; societeInput.value = ''; }
+                if (nomInput.value === 'Agent' && societeInput.value === 'MENDS') { nomInput.value = ''; societeInput.value = ''; }
+                if (nomInput.value === 'Agent' && societeInput.value === 'FLEURISTE') { nomInput.value = ''; societeInput.value = ''; }
+                if (nomInput.value === 'Livreur' && societeInput.value === 'Traiteur') { nomInput.value = ''; societeInput.value = ''; }
+
+
+                motifAutreContainer.style.display = selectedMotif === 'Autre' ? 'block' : 'none';
+                motifAutreInput.required = selectedMotif === 'Autre';
+                maintenanceOptionsContainer.classList.toggle('hidden', selectedMotif !== 'Maintenance');
+                maintenanceTypeRadios.forEach(radio => radio.required = (selectedMotif === 'Maintenance'));
+                
+                
+                // LOGIQUE DE PRÉ-REMPLISSAGE ET DISABLING POUR LES MOTIFS RESTANTS
+                
+                // 1. Logique PCS (PC Sécurité, Recyclage)
+                if (motifsPcs.includes(selectedMotif)) {
+                    nomContactVcaInput.value = 'PCS';
+                    prenomContactVcaInput.value = '';
+                    nomContactVcaInput.disabled = true;
+                    prenomContactVcaInput.disabled = true;
+                    intituleM.checked = true;
+                }
+                
+                // 2. Pas de logique spécifique pour les motifs App Express restants car ils ont été retirés.
+                
+                // Déclencher la vérification après toute modification automatique des contacts VCA
+                verifierContactVcaListeConfidentielle();
+                
+                // Déclencher la vérification Badge
+                verifierVisiteurListeBadge();
+            }
+            
+            maintenanceTypeRadios.forEach(radio => radio.addEventListener('change', () => {
+                const selectedMaintenanceType = document.querySelector('input[name="maintenance-type"]:checked')?.value;
+                maintenanceAutreContainer.classList.toggle('hidden', selectedMaintenanceType !== 'Autre Maintenance');
+                maintenanceAutreText.required = (selectedMaintenanceType === 'Autre Maintenance');
+            }));
+
+            motifRadios.forEach(radio => radio.addEventListener('change', applyFormLogic));
+            
+            applyFormLogic(); // Initialisation
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // 1. Vérification de la validité HTML native
+                if (!form.reportValidity()) return;
+                
+                // 2. Récupération et vérification des données.
+                const intitule = document.querySelector('input[name="intitule"]:checked')?.value;
+                const nom = document.getElementById('nom').value.toUpperCase();
+                const prenom = document.getElementById('prenom').value;
+                const societe = societeInput.value;
+                const nomContact = nomContactVcaInput.value.trim();
+                const prenomContact = prenomContactVcaInput.value.trim();
+                const notes = notesInput.value.trim(); 
+                let motifPrincipal = document.querySelector('input[name="motif"]:checked')?.value;
+                let motifFinalPourExcel = motifPrincipal; // Le motif par défaut pour la colonne 7
+                let bagageCount = '0'; // Valeur par défaut pour la colonne 3 (bagages)
+
+                // LOGIQUE SPECIFIQUE POUR COLONNES EXCEL (doit être gardée pour la cohérence avec App Express, bien que non nécessaire ici)
+                
+                // NOUVEAU: Les motifs App Express NE DOIVENT PAS passer ici, car ils sont gérés par le menu.
+                // On garde la logique de Maintenance/Autre.
+                
+                const motifsAvecNotification = ['RDV', 'Evènement', 'Réunion', 'VCA - Formation', 'VCA - Stage', 'Autre'];
+                const estMotifAvecNotification = motifsAvecNotification.includes(motifPrincipal);
+
+                // NOUVEAU: Vérification du Contact VCA si une notification est nécessaire
+                if (estMotifAvecNotification && nomContact === '' && prenomContact === '') {
+                    alert("Veuillez saisir le Nom ou le Prénom du Contact VCA pour la notification.");
+                    nomContactVcaInput.focus();
+                    return;
+                }
+                
+                // 3. Traitement des motifs conditionnels
+                if (motifPrincipal === 'Maintenance') {
+                    const maintenanceType = document.querySelector('input[name="maintenance-type"]:checked')?.value;
+                    
+                    if (!maintenanceType) {
+                        alert("Veuillez préciser le type de maintenance.");
+                        return;
+                    }
+                    
+                    if (maintenanceType === 'Autre Maintenance') {
+                        const autreText = maintenanceAutreText.value.trim();
+                        if (!autreText) {
+                            alert("Veuillez préciser le type de maintenance 'Autre'.");
+                            maintenanceAutreText.focus();
+                            return;
+                        }
+                        motifFinalPourExcel = autreText.toLowerCase().startsWith('maintenance') ? autreText : 'Maintenance ' + autreText;
+                    } else {
+                        motifFinalPourExcel = `Maintenance ${maintenanceType}`;
+                    }
+                } else if (motifPrincipal === 'Autre') {
+                    const autreText = motifAutreInput.value.trim();
+                     if (!autreText) {
+                        alert("Veuillez préciser le motif 'Autre'.");
+                        motifAutreInput.focus();
+                        return;
+                    }
+                    motifFinalPourExcel = autreText;
+                }
+                
+                // 4. Génération de la notification
+                let notification = '';
+                
+                if (estMotifAvecNotification) {
+                    let motifDetaille = '';
+                    switch(motifPrincipal) {
+                        case 'RDV': motifDetaille = 'pour un rendez-vous'; break;
+                        case 'Evènement': motifDetaille = 'pour un évènement'; break;
+                        case 'Réunion': motifDetaille = 'pour une réunion'; break;
+                        case 'VCA - Formation': motifDetaille = 'pour une formation'; break;
+                        case 'VCA - Stage': motifDetaille = 'pour un stage'; break;
+                        case 'Autre': motifDetaille = `pour le motif : ${motifFinalPourExcel}`; break;
+                        // Aucune logique App Express ici
+                    }
+                    const contactPourMessage = prenomContact || nomContact; 
+                    let societePhrase = ''; 
+                    
+                    // Logique pour omettre la société si vide ou VCA
+                    if (societe.trim() !== '' && societe.toUpperCase() !== 'VCA') { 
+                        societePhrase = `de la société ${societe} `;
+                    }
+                    
+                    notification = `Bonjour ${contactPourMessage}, ${intitule} ${nom} ${societePhrase}se présente à l'accueil ${motifDetaille}.\n\nNous l'invitons à patienter dans la bibliothèque.\n\nBien à vous,`;
+                    
+                    if (notes) {
+                        notification += `\n\nNote : ${notes}`;
+                    }
+                }
+                
+                // 5. Génération de la ligne Excel
+                const now = new Date();
+                const date = now.toLocaleDateString('fr-FR');
+                const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                // bagageCount est 0 par défaut pour les motifs restants
+                const excelData = `${date}\t${time}\t${bagageCount}\t${nom}\t${prenom}\t${societe}\t${motifFinalPourExcel}\t${nomContact}\t${prenomContact}\t${notes}`;
+                
+                // 6. Affichage des résultats
+                outputArea.classList.add('hidden');
+                setTimeout(() => {
+                    if (notification) {
+                        notificationSection.classList.remove('hidden');
+                        notificationMessage.textContent = notification;
+                    } else {
+                        notificationSection.classList.add('hidden');
+                        notificationMessage.textContent = '';
+                    }
+                    excelLine.textContent = excelData;
+                    outputArea.classList.remove('hidden');
+                }, 100);
+            });
+        });
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                });
+            }, 2500);
+        }
+
+        function copierMessage(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element || !element.textContent.trim()) {
+                console.error("Élément à copier non trouvé ou vide.");
+                return;
+            }
+            navigator.clipboard.writeText(element.textContent)
+            .then(() => {
+                showToast('Copié dans le presse-papiers !');
+            })
+            .catch(err => {
+                console.error('Erreur lors de la copie : ', err);
+                showToast('Erreur lors de la copie.');
+            });
+        }
+    </script>
+</body>
+</html>
