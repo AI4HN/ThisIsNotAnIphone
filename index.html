@@ -479,7 +479,7 @@
         });
     }
 
-    // 4. GESTION DE LA CONNEXION (CODE FINAL)
+    // 4. GESTION DE LA CONNEXION (VERSION AVEC CRYPTAGE PAR INDEXATION SIMPLIFIÉE)
     
     /*
     ================================================================================
@@ -498,6 +498,10 @@
     ================================================================================
     */
     
+    // Clé de session pour la navigation entre les applications
+    const SESSION_TOKEN_KEY = 'vivienne_session_active'; 
+    
+    // Mots de passe chiffrés par leur index dans l'alphabet de référence
     const ENCRYPTED_PASSWORDS = {
         'Frederic': '0839314043383449',
         'Edwina': '0640402940395026'
@@ -505,6 +509,9 @@
 
     const REF_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; 
     
+    /**
+     * Convertit une chaîne de caractères en une chaîne d'index (chiffrement par substitution).
+     */
     function indexCipher(str) {
         let encryptedStr = '';
         for (let i = 0; i < str.length; i++) {
@@ -550,11 +557,13 @@
             const screen = document.querySelector('.screen-border');
             const content = document.querySelector('.phone-content');
             
+            // DÉVERROUILLAGE ET CRÉATION DU JETON DE SESSION
             modal.style.display = 'none';
             screen.classList.remove('locked');
             content.classList.add('unlocked');
             
             localStorage.setItem('vivienne_current_user_id', id);
+            localStorage.setItem(SESSION_TOKEN_KEY, 'ok'); // <-- CLÉ DE SESSION TEMPORAIRE
 
             const prenom = getPrenomOperateur();
             const prenomOperateurElement = document.getElementById('prenom-operateur');
@@ -576,11 +585,20 @@
 
         if (!content || !modal || !screen) return;
         
-        // On force l'affichage de la modale pour demander l'authentification à chaque lancement
-        modal.style.display = 'flex'; 
-        screen.classList.add('locked');
-        content.classList.remove('unlocked');
-        
+        const sessionActive = localStorage.getItem(SESSION_TOKEN_KEY) === 'ok';
+
+        if (sessionActive) {
+            // DÉVERROUILLAGE SI LE JETON EST TROUVÉ (navigation interne)
+            modal.style.display = 'none'; 
+            screen.classList.remove('locked');
+            content.classList.add('unlocked');
+        } else {
+            // AFFICHAGE DE LA MODALE SI PAS DE JETON (nouveau lancement)
+            modal.style.display = 'flex'; 
+            screen.classList.add('locked');
+            content.classList.remove('unlocked');
+        }
+
         // Affichage du prénom de l'opérateur si l'ID est connu du localStorage
         const currentUserId = localStorage.getItem('vivienne_current_user_id');
         if (currentUserId) {
