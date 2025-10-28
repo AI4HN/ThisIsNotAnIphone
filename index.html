@@ -101,6 +101,7 @@
         padding-bottom: 20px; position: relative;
         width: 100%; height: 100%;
     }
+    /* MODIFIÉ: .phone est maintenant .phone-content .phone */
     .phone{ max-width: none; margin: 0; background: transparent; padding-bottom: 0; }
     .status{
         padding: 16px 18px 8px 18px; display:flex; align-items:center; justify-content:space-between;
@@ -264,9 +265,73 @@
     .overlay-content { text-align: left; font-size: 13px; line-height: 1.5; color: var(--text); }
     .overlay-content h3 { text-align: center; margin-top: 0; font-size: 16px; color: var(--accent); }
     .overlay-content small { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-style: italic; }
+
+    /* NOUVEAU : Styles de Connexion */
+    .screen-border.locked {
+        filter: blur(5px); /* Optionnel, pour l'effet de flou */
+        pointer-events: none;
+    }
+    .phone-content { 
+        visibility: hidden; 
+        opacity: 0; 
+        transition: opacity 0.5s; 
+    }
+    .phone-content.unlocked { 
+        visibility: visible; 
+        opacity: 1; 
+    }
+    /* Styles pour la modale de connexion */
+    #login-modal {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+        background: rgba(0,0,0,0.85); 
+        z-index: 1000; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        color: white;
+    }
+    #login-modal > div {
+        background: #fff; 
+        padding: 40px; 
+        border-radius: 12px; 
+        max-width: 300px; 
+        text-align: center; 
+        color: var(--text);
+    }
+    #login-modal h3 { margin-top: 0; color: var(--accent); }
+    #login-modal p { color: var(--red); font-size: 13px; min-height: 20px; }
+    #login-modal input {
+        width: 100%; 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        border: 1px solid var(--muted); 
+        border-radius: 6px;
+    }
+    #login-modal button {
+        width: 100%; 
+        padding: 10px; 
+        background-color: var(--accent); 
+        color: white; 
+        border: none; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
+
+  <!-- NOUVEAU : Modale de connexion (Affichée par défaut et masquée au succès) -->
+  <div id="login-modal" style="display: none;">
+      <div style="background: #fff; padding: 40px; border-radius: 12px; max-width: 300px; text-align: center; color: var(--text);">
+          <h3>Connexion Requise</h3>
+          <p id="login-error" style="color: var(--red); font-size: 13px; min-height: 20px;"></p>
+          <input type="text" id="login-id" placeholder="Identifiant">
+          <input type="password" id="login-password" placeholder="Mot de passe">
+          <button onclick="handleLogin()">Se Connecter</button>
+      </div>
+  </div>
+  <!-- FIN Modale de connexion -->
 
   <div class="iphone-frame">
       <div class="power-button"></div>
@@ -275,9 +340,11 @@
       <div class="volume-button volume-down"></div>
       <div class="bottom-speaker"></div>
 
-      <div class="screen-border">
+      <!-- MODIFIÉ : Ajout de la classe 'locked' pour masquer l'app au démarrage -->
+      <div class="screen-border locked">
           
-          <div class="phone">
+          <!-- MODIFIÉ : Enveloppe le contenu de l'application -->
+          <div class="phone-content phone">
               <div class="status">
                   <div id="date-display"></div> 
                   <div>5G ▴▴▴ ▰▰▰</div>
@@ -352,7 +419,8 @@
                       Conditions d’utilisation
                   </a>
               </p>
-          </div>
+          <!-- FIN de la div .phone-content -->
+          </div> 
           
           <div id="overlay-avertissement">
               <div class="overlay-content">
@@ -365,7 +433,8 @@
               </div>
           </div>
 
-      </div>
+      <!-- FIN de la div .screen-border -->
+      </div> 
   </div>
   
   <div id="notification-popup"></div>
@@ -396,14 +465,7 @@
         }
         return prenom;
     }
-    document.addEventListener('DOMContentLoaded', () => {
-        const prenom = getPrenomOperateur();
-        const prenomOperateurElement = document.getElementById('prenom-operateur');
-        if (prenomOperateurElement) {
-            prenomOperateurElement.textContent = `Bienvenue, ${prenom}`;
-        }
-    });
-
+    
     // 3. GESTION DE L'OVERLAY D'AVERTISSEMENT
     const overlay = document.getElementById('overlay-avertissement');
     function afficherAvertissement() {
@@ -416,6 +478,129 @@
             overlay.classList.remove('show');
         });
     }
+
+    // 4. GESTION DE LA CONNEXION (CODE FINAL)
+    
+    /*
+    ================================================================================
+      AVERTISSEMENT - PROTOTYPE
+    ================================================================================
+      - Propriété : Ce code est un prototype et reste la propriété intellectuelle 
+        de Frédéric Jacquet / AI[4]HumanNexus (https://ai4humannexus.com/).
+      - Licence d'utilisation : Il est mis à la disposition exclusive de 
+        l'accueil "Vivienne" de VCA, à titre gracieux et uniquement pour des 
+        fins de test et d'évaluation.
+      - Non-distribution : Ce code ne doit en aucun cas être transmis, copié ou 
+        distribué sans l'autorisation écrite de son auteur.
+      - Absence de garantie : Ce prototype est fourni "en l'état" à des fins de 
+        démonstration et n'incorpore aucune garantie de maintenance ou de support 
+        pour d'éventuelles évolutions.
+    ================================================================================
+    */
+    
+    const ENCRYPTED_PASSWORDS = {
+        'Frederic': '0839314043383449',
+        'Edwina': '0640402940395026'
+    };
+
+    const REF_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; 
+    
+    function indexCipher(str) {
+        let encryptedStr = '';
+        for (let i = 0; i < str.length; i++) {
+            const char = str[i];
+            const index = REF_ALPHABET.indexOf(char);
+
+            if (index === -1) {
+                return null; 
+            }
+            
+            encryptedStr += String(index).padStart(2, '0');
+        }
+        return encryptedStr;
+    }
+    
+    function handleLogin() {
+        const idInput = document.getElementById('login-id');
+        const passInput = document.getElementById('login-password');
+        const errorDisplay = document.getElementById('login-error');
+        
+        const id = idInput.value.trim();
+        const password = passInput.value;
+        
+        errorDisplay.textContent = '';
+        
+        if (!ENCRYPTED_PASSWORDS[id]) {
+            errorDisplay.textContent = 'Identifiant ou mot de passe incorrect.';
+            return;
+        }
+        
+        const encryptedAttempt = indexCipher(password);
+        
+        if (encryptedAttempt === null) {
+            errorDisplay.textContent = 'Le mot de passe contient un caractère non valide.';
+            return;
+        }
+
+        const expectedEncryptedPass = ENCRYPTED_PASSWORDS[id];
+        
+        if (encryptedAttempt === expectedEncryptedPass) {
+            
+            const modal = document.getElementById('login-modal');
+            const screen = document.querySelector('.screen-border');
+            const content = document.querySelector('.phone-content');
+            
+            modal.style.display = 'none';
+            screen.classList.remove('locked');
+            content.classList.add('unlocked');
+            
+            localStorage.setItem('vivienne_current_user_id', id);
+
+            const prenom = getPrenomOperateur();
+            const prenomOperateurElement = document.getElementById('prenom-operateur');
+            if (prenomOperateurElement) {
+                prenomOperateurElement.textContent = `Bienvenue, ${prenom}`;
+            }
+            
+        } else {
+            errorDisplay.textContent = 'Identifiant ou mot de passe incorrect.';
+            passInput.value = '';
+        }
+    }
+
+    // Vérification de l'état de connexion au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('login-modal');
+        const screen = document.querySelector('.screen-border');
+        const content = document.querySelector('.phone-content');
+
+        if (!content || !modal || !screen) return;
+        
+        // On force l'affichage de la modale pour demander l'authentification à chaque lancement
+        modal.style.display = 'flex'; 
+        screen.classList.add('locked');
+        content.classList.remove('unlocked');
+        
+        // Affichage du prénom de l'opérateur si l'ID est connu du localStorage
+        const currentUserId = localStorage.getItem('vivienne_current_user_id');
+        if (currentUserId) {
+             const prenom = getPrenomOperateur();
+             const prenomOperateurElement = document.getElementById('prenom-operateur');
+             if (prenomOperateurElement) {
+                 prenomOperateurElement.textContent = `Bienvenue, ${prenom}`;
+             }
+        }
+
+        // Ajout d'un écouteur pour la touche "Entrée"
+        const passwordInput = document.getElementById('login-password');
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+        }
+    });
   </script>
   
   <script src="./MY-APPS/actions_express.js"></script>
