@@ -54,9 +54,23 @@ function getDateDuJourFormatee() {
     return today.toLocaleDateString('fr-FR');
 }
 
+/**
+ * Ajoute un bouton flottant "MENU" qui retourne au menu principal.
+ * Ajoute le jeton de session à l'URL si une session est active pour éviter la reconnexion.
+ */
 function ajouterBoutonMenu() {
+    const SESSION_TOKEN_KEY = 'vivienne_session_active'; 
     const menuButton = document.createElement('a');
-    menuButton.href = '../index.html';
+    
+    // Assurez-vous que le lien de retour est correct
+    let targetUrl = '../index.html'; 
+
+    // Si la session est active, on ajoute le paramètre pour que le menu principal déverrouille l'écran
+    if (localStorage.getItem(SESSION_TOKEN_KEY) === 'ok') {
+        targetUrl += '?session=active';
+    }
+    
+    menuButton.href = targetUrl;
     menuButton.className = 'menu-flottant';
     menuButton.textContent = 'MENU';
     menuButton.title = "Retour au menu d'accueil";
@@ -215,7 +229,7 @@ function construireAdresseEmail(prenom, nom, estExterne) {
     } else if (nomNettoye) {
         // S'il n'y a qu'un nom, on l'utilise
         return `${nomNettoye}@${domaine}`;
-    } else if (prenomNettoye) {
+    } else if (prennoNettoye) {
         // S'il n'y a qu'un prénom, on l'utilise
         return `${prenomNettoye}@${domaine}`;
     } else {
