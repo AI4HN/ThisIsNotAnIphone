@@ -56,7 +56,7 @@ function getDateDuJourFormatee() {
 
 function ajouterBoutonMenu() {
     const menuButton = document.createElement('a');
-    menuButton.href = '../MENU.html';
+    menuButton.href = '../index.html';
     menuButton.className = 'menu-flottant';
     menuButton.textContent = 'MENU';
     menuButton.title = "Retour au menu d'accueil";
