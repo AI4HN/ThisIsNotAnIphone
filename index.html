@@ -218,7 +218,8 @@
         grid-column: span 3;
     }
     
-    .express-mega-tile { padding: 10px; height: 180px; display: flex; flex-direction: column; justify-content: space-between; cursor: default; }
+    /* MODIFIÉ : Hauteur ajustée pour la 3ème rangée (180px -> 230px ou plus) */
+    .express-mega-tile { padding: 10px; height: 230px; display: flex; flex-direction: column; justify-content: space-between; cursor: default; }
     .express-mega-tile:active { transform: none; box-shadow: 0 8px 20px rgba(0,0,0,.06); }
     .label-express { font-size: 12px; font-weight: 700; line-height: 1.1; text-align: center; color: var(--text); margin-top: 0; }
     
@@ -253,6 +254,12 @@
     .sub-icon.blue{ border-color: #3b82f6; }
     .sub-icon.green{ border-color: #34d399; }
     .sub-icon.pink{ border-color: #fbcfe8; }
+    /* NOUVEAUX : Styles pour la 3ème rangée (Exemples) */
+    .sub-icon.yellow{ border-color: #fcd34d; }
+    .sub-icon.purple{ border-color: #a78bfa; }
+    .sub-icon.teal{ border-color: #2dd4bf; }
+    .sub-icon.cyan{ border-color: #06b6d4; }
+    
     .sub-app:hover { transform: scale(3.0); box-shadow: 0 4px 8px rgba(0,0,0,.2); z-index: 10; }
     .sub-app:active { transform: scale(0.9); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
     .sub-app img { width: 90%; height: 90%; object-fit: contain; }
@@ -321,7 +328,6 @@
 </head>
 <body>
 
-  <!-- NOUVEAU : Modale de connexion (Affichée par défaut et masquée au succès) -->
   <div id="login-modal" style="display: none;">
       <div style="background: #fff; padding: 40px; border-radius: 12px; max-width: 300px; text-align: center; color: var(--text);">
           <h3>Connexion Requise</h3>
@@ -331,8 +337,6 @@
           <button onclick="handleLogin()">Se Connecter</button>
       </div>
   </div>
-  <!-- FIN Modale de connexion -->
-
   <div class="iphone-frame">
       <div class="power-button"></div>
       <div class="silence-switch"></div>
@@ -340,10 +344,8 @@
       <div class="volume-button volume-down"></div>
       <div class="bottom-speaker"></div>
 
-      <!-- MODIFIÉ : Ajout de la classe 'locked' pour masquer l'app au démarrage -->
       <div class="screen-border locked">
           
-          <!-- MODIFIÉ : Enveloppe le contenu de l'application -->
           <div class="phone-content phone">
               <div class="status">
                   <div id="date-display"></div> 
@@ -388,13 +390,20 @@
                         <div class="sub-app sub-icon violet" onclick="copyBouquetAccueil()"><img src="./MY-APPS/IMG/Icon Bouquet Accueil.png" alt="Bouquet Accueil"></div>
                         <div class="sub-app sub-icon gray" onclick="copyLingeAccueil()"><img src="./MY-APPS/IMG/Icon Linge Accueil.png" alt="Linge Accueil"></div>
                         <div class="sub-app sub-icon black" onclick="copyLingeFablab()"><img src="./MY-APPS/IMG/Icon Linge FABLAB.png" alt="Linge FABLAB"></div>
+                        
                         <div class="sub-app sub-icon red" onclick="copyMachineCafe()"><img src="./MY-APPS/IMG/Icon Machine Cafe.png" alt="Machine Café"></div>
                         <div class="sub-app sub-icon blue" onclick="copyMachineDistributeur()"><img src="./MY-APPS/IMG/Icon Machine Distributeur.png" alt="Distributeur"></div>
                         <div class="sub-app sub-icon green" onclick="copyTraiteur()"><img src="./MY-APPS/IMG/Icon Traiteur.png" alt="Traiteur"></div>
                         <div class="sub-app sub-icon pink" onclick="copyBadgeOublie()"><img src="./MY-APPS/IMG/Icon Badge.png" alt="Badge Oublié"></div>
-                    </div>
+                        
+                        <div class="sub-app sub-icon yellow" onclick="copyRecyclage()"><img src="./MY-APPS/IMG/Icon Recyclage.png" alt="Recyclage"></div>
+                        <div class="sub-app sub-icon purple" onclick="copyPCS()"><img src="./MY-APPS/IMG/Icon PCS.png" alt="PCS"></div>
+                        <div class="sub-app sub-icon teal"></div>
+                        <div class="sub-app sub-icon cyan"></div>
+                        </div>
                     <div class="label-express">App Express</div>
                 </div>
+
                 
                 <a class="app" href="./MY-APPS/REPORTING_VISITEURS_MOIS.html">
                   <div class="icon report-icon"><img src="./MY-APPS/IMG/Icon Report01.png" alt="Icône Rapport Visiteurs/Jours"></div>
@@ -419,7 +428,6 @@
                       Conditions d’utilisation
                   </a>
               </p>
-          <!-- FIN de la div .phone-content -->
           </div> 
           
           <div id="overlay-avertissement">
@@ -433,7 +441,6 @@
               </div>
           </div>
 
-      <!-- FIN de la div .screen-border -->
       </div> 
   </div>
   
