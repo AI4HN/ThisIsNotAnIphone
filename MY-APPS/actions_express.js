@@ -1,4 +1,4 @@
-// AVERTISSEMENT : Je dois inclure l'avertissement dans tous les codes de cette application.
+// AVERTISSEMENT : Je dois inclure l'avertissement dans tous les codes de cette application, lors de la création de nouvelles applications ou de la modification de celles qui existent.
 /*
 ================================================================================
   ACTIONS EXPRESS (JS)
@@ -298,8 +298,7 @@ async function copyTraiteur() {
         hour12: false
     });
     
-    // Ligne Excel formatée avec les nouvelles valeurs :
-    // JJ/MM/AAAA\tHH:MM\t0\tLIVREUR\t\tTRAITEUR\tPetit Dej - Repas ...\tPhilippe
+    // Ligne Excel formatée : JJ/MM/AAAA\tHH:MM\t0\tLIVREUR\t\tTRAITEUR\tPetit Dej - Repas ...\tPhilippe
     const excelLine = `${dateString}\t${timeString}\t0\tLIVREUR\t\tTRAITEUR\tPetit Dej - Repas ...\tPhilippe`;
     
     // --- 2. Copie dans le presse-papiers ---
@@ -346,6 +345,114 @@ async function copyBadgeOublie() {
     try {
         await navigator.clipboard.writeText(excelLine);
         showNotification('Badge Oublié : Ligne copiée ! 💳', 'success');
+
+    } catch (err) {
+        console.error('Erreur lors de la copie dans le presse-papiers :', err);
+        showNotification('Erreur : Copie dans le presse-papiers échouée ❌', 'error');
+    }
+}
+
+/*
+================================================================================
+  NOUVELLE FONCTION : RECYCLAGE
+================================================================================
+
+================================================================================
+  AVERTISSEMENT - PROTOTYPE
+================================================================================
+  - Propriété : Ce code est un prototype et reste la propriété intellectuelle 
+    de Frédéric Jacquet / AI[4]HumanNexus (https://ai4humannexus.com/).
+  - Licence d'utilisation : Il est mis à la disposition exclusive de 
+    l'accueil "Vivienne" de VCA, à titre gracieux et uniquement pour des 
+    fins de test et d'évaluation.
+  - Non-distribution : Ce code ne doit en aucun cas être transmis, copié ou 
+    distribué sans l'autorisation écrite de son auteur.
+  - Absence de garantie : Ce prototype est fourni "en l'état" à des fins de 
+    démonstration et n'incorpore aucune garantie de maintenance ou de support 
+    pour d'éventuelles évolutions.
+================================================================================
+*/
+
+/**
+ * Génère la ligne de données pour Recyclage et la copie dans le presse-papiers.
+ */
+async function copyRecyclage() {
+    // --- 1. Préparation des données avec le format JJ/MM/AAAA et HH:MM ---
+    const now = new Date();
+    
+    const dateString = now.toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+    });
+    
+    const timeString = now.toLocaleTimeString('fr-FR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false
+    });
+    
+    // Ligne Excel formatée : JJ/MM/AAAA\tHH:MM\t0\tAGENT\t\tClickEco / Cèdre\tRecyclage\tPCS
+    const excelLine = `${dateString}\t${timeString}\t0\tAGENT\t\tClickEco / Cèdre\tRecyclage\tPCS`;
+    
+    // --- 2. Copie dans le presse-papiers ---
+    try {
+        await navigator.clipboard.writeText(excelLine);
+        showNotification('Recyclage : Ligne copiée ! ♻️', 'success'); 
+
+    } catch (err) {
+        console.error('Erreur lors de la copie dans le presse-papiers :', err);
+        showNotification('Erreur : Copie dans le presse-papiers échouée ❌', 'error');
+    }
+}
+
+/*
+================================================================================
+  NOUVELLE FONCTION : PCS
+================================================================================
+
+================================================================================
+  AVERTISSEMENT - PROTOTYPE
+================================================================================
+  - Propriété : Ce code est un prototype et reste la propriété intellectuelle 
+    de Frédéric Jacquet / AI[4]HumanNexus (https://ai4humannexus.com/).
+  - Licence d'utilisation : Il est mis à la disposition exclusive de 
+    l'accueil "Vivienne" de VCA, à titre gracieux et uniquement pour des 
+    fins de test et d'évaluation.
+  - Non-distribution : Ce code ne doit en aucun cas être transmis, copié ou 
+    distribué sans l'autorisation écrite de son auteur.
+  - Absence de garantie : Ce prototype est fourni "en l'état" à des fins de 
+    démonstration et n'incorpore aucune garantie de maintenance ou de support 
+    pour d'éventuelles évolutions.
+================================================================================
+*/
+
+/**
+ * Génère la ligne de données pour PCS et la copie dans le presse-papiers.
+ */
+async function copyPCS() {
+    // --- 1. Préparation des données avec le format JJ/MM/AAAA et HH:MM ---
+    const now = new Date();
+    
+    const dateString = now.toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+    });
+    
+    const timeString = now.toLocaleTimeString('fr-FR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false
+    });
+    
+    // Ligne Excel formatée : JJ/MM/AAAA\tHH:MM\t0\tAGENT\t\tPCS\t\tPCS
+    const excelLine = `${dateString}\t${timeString}\t0\tAGENT\t\tPCS\t\tPCS`;
+    
+    // --- 2. Copie dans le presse-papiers ---
+    try {
+        await navigator.clipboard.writeText(excelLine);
+        showNotification('PCS : Ligne copiée ! 🗂️', 'success'); 
 
     } catch (err) {
         console.error('Erreur lors de la copie dans le presse-papiers :', err);
