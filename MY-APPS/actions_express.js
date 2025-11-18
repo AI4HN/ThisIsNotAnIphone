@@ -339,7 +339,8 @@ async function copyBadgeOublie() {
     });
     
     // Ligne Excel formatée : DATE | HEURE | 0 | VCA | (vide) | VCA | Badge oublié
-    const excelLine = `${dateString}\t${timeString}\t0\tVCA\t\tVCA\tBadge oublié`;
+    // Champ 7 est "Badge oublié"
+    const excelLine = `${dateString}\t${timeString}\t0\tVCA\t\tVCA\tBadge oublié\t`;
     
     // --- Copie dans le presse-papiers ---
     try {
@@ -453,6 +454,61 @@ async function copyPCS() {
     try {
         await navigator.clipboard.writeText(excelLine);
         showNotification('PCS : Ligne copiée ! 🗂️', 'success'); 
+
+    } catch (err) {
+        console.error('Erreur lors de la copie dans le presse-papiers :', err);
+        showNotification('Erreur : Copie dans le presse-papiers échouée ❌', 'error');
+    }
+}
+
+/*
+================================================================================
+  NOUVELLE FONCTION : ÉVÈNEMENT SPÉCIAL
+================================================================================
+
+================================================================================
+  AVERTISSEMENT - PROTOTYPE
+================================================================================
+  - Propriété : Ce code est un prototype et reste la propriété intellectuelle 
+    de Frédéric Jacquet / AI[4]HumanNexus (https://ai4humannexus.com/).
+  - Licence d'utilisation : Il est mis à la disposition exclusive de 
+    l'accueil "Vivienne" de VCA, à titre gracieux et uniquement pour des 
+    fins de test et d'évaluation.
+  - Non-distribution : Ce code ne doit en aucun cas être transmis, copié ou 
+    distribué sans l'autorisation écrite de son auteur.
+  - Absence de garantie : Ce prototype est fourni "en l'état" à des fins de 
+    démonstration et n'incorpore aucune garantie de maintenance ou de support 
+    pour d'éventuelles évolutions.
+================================================================================
+*/
+
+/**
+ * Génère la ligne de données pour Événement Spécial et la copie dans le presse-papiers.
+ * (Utilise le même format que Badge Oublié, changeant uniquement le Champ 7).
+ */
+async function copyEvenementSpecial() {
+    // --- Préparation des données avec le format JJ/MM/AAAA et HH:MM ---
+    const now = new Date();
+    
+    const dateString = now.toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+    });
+    
+    const timeString = now.toLocaleTimeString('fr-FR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false
+    });
+    
+    // Ligne Excel formatée : DATE | HEURE | 0 | VCA | (vide) | VCA | Évènement Spécial | (vide)
+    const excelLine = `${dateString}\t${timeString}\t0\tVCA\t\tVCA\tÉvènement Spécial\t`;
+    
+    // --- Copie dans le presse-papiers ---
+    try {
+        await navigator.clipboard.writeText(excelLine);
+        showNotification('Évènement Spécial : Ligne copiée ! 🌟', 'success');
 
     } catch (err) {
         console.error('Erreur lors de la copie dans le presse-papiers :', err);
